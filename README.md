@@ -1,5 +1,5 @@
-Supporting files for paper
-### Optimal key rates for quantum key distribution with partial source characterization
+Supporting files for the paper
+### [Optimal key rates for quantum key distribution with partial source characterization](https://arxiv.org/abs/2510.13085)
 #### Margarida Pereira, Guillermo Currás-Lorenzo, and Mateus Araújo.
 
 ## Installation
