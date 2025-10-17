@@ -6,7 +6,7 @@ using ConicQKD
 using MosekTools
 
 function zkraus(p_z)
-    if p_z == 1.0 || p_z == 0.0
+    if p_z == 1 || p_z == 0
         Π = [kron(proj(1, 2), I(2)), kron(proj(2, 2), I(2))]
     else
         Π0 = proj(1, 4) + proj(3, 4)
@@ -17,9 +17,9 @@ function zkraus(p_z)
 end
 
 function gkraus(p_z)
-    if p_z == 1.0
+    if p_z == 1
         return [kron(Matrix(I, 2, 4), Matrix(I, 2, 3))]
-    elseif p_z == 0.0
+    elseif p_z == 0
         return [kron([0 0 1 0; 0 0 0 1], Matrix(I, 2, 3))]
     else
         EZ = kron(proj(1, 4) + proj(2, 4), Matrix(I, 2, 3))
@@ -122,7 +122,7 @@ function hae_bb84(p_z::T, ϵ::T, η::T, δ::T, pd::T) where {T<:Real}
     #fidelities ordered as ⟨ϕ1|ϕ0⟩ ⟨ϕ+|ϕ0⟩ ⟨ϕ-|ϕ0⟩ ⟨ϕ+|ϕ1⟩ ⟨ϕ-|ϕ1⟩ ⟨ϕ-|ϕ+⟩
     
     correction = zeros(T, 4, 4)
-    if p_z == 1.0 || p_z == 0.0
+    if p_z == 1 || p_z == 0
         diag_target = fill(T(0.5), 4)
         correction[1, 2] = 2
         correction[1:2, 3:4] .= 2
@@ -137,7 +137,11 @@ function hae_bb84(p_z::T, ϵ::T, η::T, δ::T, pd::T) where {T<:Real}
 
     if ϵ == 0
         @variable(model, ρcore[1:6, 1:6] ∈ hermitian_space)
-        u, s, v = svd(bad_states)
+        if p_z == 1 || p_z == 0
+            u, s, v = svd(bad_states)
+        else
+            u, s, v = svd(bad_states * Diagonal(sqrt.(diag_target)))
+        end
         V = kron(v, I(3))
         ρ = wrapper(V * ρcore * V')
         ρA = partial_trace(ρ, 2, [4, 3])
