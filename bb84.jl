@@ -95,9 +95,8 @@ end
 
 function total_rate_bb84(ϵ::T, δ::T, D; eph = false) where {T<:Real}
     α = T(2) / 10
-    ηbin = T(1) / 2
     ηdetector = T(73) / 100
-    η = 10^(-α * D / 10)
+    η = ηdetector * 10^(-α * D / 10)
     f = T(116) / 100
     pd = inv(T(10^6))
     p_z = T(1)

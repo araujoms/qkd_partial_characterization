@@ -73,7 +73,8 @@ end
 
 function total_rate_mdi(α::T, ϵ::T, δ_SPF::T, D; eph = false) where {T<:Real}
     attenuation = T(2) / 10
-    η = 10^(-attenuation * D / 20)
+    ηdetector = T(73) / 100
+    η = ηdetector * 10^(-attenuation * D / 20)
     f = T(116) / 100
     pd = inv(T(10^6))
     δ_mis = T(0)
